@@ -1,13 +1,51 @@
 import router from "@/router"
 import cookie from "js-cookie"
+import store from '@/store/indedx'
 //保安系统
-router.beforeEach((to, from, next) => {
-    const token = cookie.get("rh_id")
-    if (!token) {
+router.beforeEach(async (to, from, next) => {
+    let token = store.state.token
+    if(!token){
+        //用户刷新了 VueX中没有tokrn了 将cookie中的token再次存放到VueX中
+        token = cookie.get("rh_id");
+        if(!token){
+            //cookie内没有，代表压根没登录
+            if(to.path =="/login"){
+                return next()
+            }else{
+                return next('/login')
+            }
+        
+        }
+        store.commit("saveToken",token)
+
+    }
+    let userProfilre ;
+    if(store.state.user.username){//vueX有数据
+        userProfilre = store.state.user
+    }else{
+         //去获取个人信息   
+        try{
+            userProfilre = await store.dispatch("getUserProfile")//async 的await让store.dispatch("getUserProfile")先执行 返回数据  用于判断
+        } catch(error){ 
+            console.log(error);
+        }
+    }
+   
+   
+    console.log(userProfilre);//有东西真的。没有假的错误token，没登陆
+    //检查token，再去检查个人信息
+    // if(userProfilre){
+ 
+    // }
+    // const token = cookie.get("rh_id")
+
+
+    if (!userProfilre) {//上面代码反复查token，于是判断有无数据//没有登陆
 
         if (to.path == "/login") {
             next()
         } else {
+            cookie.remove('rh_id')
             next("/login")
         }
     } else {

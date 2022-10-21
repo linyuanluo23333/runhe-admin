@@ -14,9 +14,9 @@
                 </el-header>
                 <el-main>
                     <!-- {{$store.state.msg}}vuex -->
-                    {{msg}}
+                    <!-- {{msg}} -->
                     <router-view></router-view> <!-- 二级路由的渲染 -->
-                    <el-button @click="cd">修改store内的值</el-button>
+                    <!-- <el-button @click="cd">修改store内的值</el-button> -->
                 </el-main>
             </el-container>
         </el-container>
@@ -34,56 +34,56 @@ export default {
     },
     data() {
         return {
-            user: {
-                username: "",
-                avator: ""
-            }
+            // user: { VueX中有了
+            //     username: "",
+            //     avator: ""
+            // }
         }
     },
-    computed:{//vue 使用 
-        msg(){
-            return this.$store.state.msg;
-        }
-    },
-    created() {
-        let token = this.$cookie.get("rh_id");
-        console.log(token);
-        if (!token) {//token判断，，非常不安全  纸视判断本地有无token  可以被添加cookie
-            this.$message.error("请先登录")
-            return this.$router.push("/login")
-        }
-        this.$http({
-            url: "api/superprofile",
-            headers: {
-                authorization: `Bearer ${token}`
-            }
-        }).then(res => {
-            if (res.data.status) {
-                this.$message.error(res.data.errmsg)
-            } else {
-                this.user.username = res.data.username;
-                this.user.avator = `${url}${res.data.avator}`;
-            }
-            console.log(token);
-            console.log(res.data);
-            console.log(res);
+    // computed:{//vue 使用 
+    //     msg(){
+    //         return this.$store.state.msg;
+    //     }
+    // },
+    // created() {
+    //     let token = this.$cookie.get("rh_id");
+    //     console.log(token);
+    //     if (!token) {//token判断，，非常不安全  纸视判断本地有无token  可以被添加cookie
+    //         this.$message.error("请先登录")
+    //         return this.$router.push("/login")
+    //     }
+    //     this.$http({    手写的接口
+    //         url: "api/superprofile",
+    //         headers: {
+    //             authorization: `Bearer ${token}`
+    //         }
+    //     }).then(res => {
+    //         if (res.data.status) {
+    //             this.$message.error(res.data.errmsg)
+    //         } else {
+    //             this.user.username = res.data.username;
+    //             this.user.avator = `${url}${res.data.avator}`;
+    //         }
+    //         console.log(token);
+    //         console.log(res.data);
+    //         console.log(res);
 
-        }).catch(error => {
-            this.$message.error("接口错误")
-        })
-    },
-    methods: {
-        logout() {
-            this.$cookie.remove("rh_id")
-            this.$router.push("/login")
-        },
-        cd(){
-         //   this.$store.state.msg = 1000//不允许这样使用
+    //     }).catch(error => {
+    //         this.$message.error("接口错误")
+    //     })
+    // },
+    // methods: {
+    //     logout() {
+    //         this.$cookie.remove("rh_id")
+    //         this.$router.push("/login")
+    //     },
+    //     cd(){
+    //      //   this.$store.state.msg = 1000//不允许这样使用
 
-         //通过mutations 修改state的值
-         this.$store.commit("changMsg",2000000)
-        }
-    }
+    //      //通过mutations 修改state的值
+    //      this.$store.commit("changMsg",2000000)
+    //     }
+    // }
 }
 </script>
 <style scoped>

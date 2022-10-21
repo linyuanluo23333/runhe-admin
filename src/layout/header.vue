@@ -10,16 +10,17 @@
             </el-breadcrumb>
         </div>
         <div class="rigth">
-            <el-dropdown trigger="click">
+            <el-dropdown trigger="click" @command="handleCommand">
                 <span class="el-dropdown-link">
-                    <el-image style="width: 35px; height: 35px" :src="url" class="avator"></el-image>
+                    <el-image style="width: 35px; height: 35px" :src="user.avator" class="avator"></el-image>
                     <!-- <i class="el-icon-arrow-down el-icon--right"></i> -->
                 </span>
                 <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item> {{user.username}}</el-dropdown-item>
                     <el-dropdown-item>
                         <el-image style="width: 35px; height: 35px" :src="url" :preview-src-list="srcList"></el-image>
                     </el-dropdown-item>
-                    <el-dropdown-item > 退出登录</el-dropdown-item>
+                    <el-dropdown-item command="logout"> 退出登录</el-dropdown-item>
 
                 </el-dropdown-menu>
             </el-dropdown>
@@ -28,37 +29,41 @@
     </div>
 </template>
 <script>
+
 export default {
     data() {
         return {
             url: 'https://gd-hbimg.huaban.com/31d4ecf35a14b1269b987e1326d1369534b6f6cc4f757-oAIvsv_fw658',
             className: {
-                "el-icon-s-unfold":false,
+                "el-icon-s-unfold": false,
                 "el-icon-s-fold": true,
                 switch: true
             },
             state: true,
             srcList: [
-          'https://gd-hbimg.huaban.com/31d4ecf35a14b1269b987e1326d1369534b6f6cc4f757-oAIvsv_fw658',
+                'https://gd-hbimg.huaban.com/31d4ecf35a14b1269b987e1326d1369534b6f6cc4f757-oAIvsv_fw658',
 
-        ]
+            ]
         }
     },
-    created(){
+    created() {
         this.className['el-icon-s-unfold'] = this.isCollapse
-            this.className['el-icon-s-fold'] = !this.isCollapse
+        this.className['el-icon-s-fold'] = !this.isCollapse
     },
     computed: {
         isCollapse() {
             return this.$store.state.isCollapse;
+        },
+        user() {
+            return this.$store.state.user;
         }
 
     },
-    watch:{
+    watch: {
         isCollapse(newValue) {
             this.className['el-icon-s-unfold'] = newValue
             this.className['el-icon-s-fold'] = !newValue
-        } 
+        }
     },
     methods: {
         change() {
@@ -68,6 +73,14 @@ export default {
 
             //vuex
             this.$store.commit('changeIsCollapse')
+        },
+        handleCommand(command) {
+            console.log(command);
+            if (command === 'logout') { 
+                this.$store.commit('removeToken');
+                this.$cookie.remove('rh_id');
+                this.$router.push('/login')
+            }
         }
 
     }
@@ -111,6 +124,7 @@ export default {
     cursor: pointer;
     padding: 15px;
 }
+
 .switch:hover {
     background-color: rgba(0, 0, 0, 0.025);
 }

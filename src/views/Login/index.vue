@@ -69,19 +69,19 @@ export default {
                     let date = new Date();
                     date.setHours(date.getHours()+10);//设置token存在事件
                     //要将后端给的Token 存起来方便后期使用（cookie），  保存vip卡
-                    this.$cookie.set("rh_id",res.data.token,{expires:date})
-
+                    this.$cookie.set("rh_id",res.data.token,{expires:date}) 
+                    this.$store.commit("saveToken",res.data.token)//mutations 把token保存到vuex
                     this.$message({
                         message: `${res.data.username}-${res.data.msg}`,
                         type: 'success'
                     });
                     this.$router.push("/")
                 }
-                this.login.username = "";
-                this.login.password = "";
-                this.login.text = "";
-                this.reRender()
-                this.intervalRerender()
+                // this.login.username = "";
+                // this.login.password = "";
+                // this.login.text = "";
+                // this.reRender()
+                // this.intervalRerender()
 
 
             }).catch(error => {
