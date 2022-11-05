@@ -11,7 +11,10 @@ export default new VueX.Store({
         isCollapse: false,
         user: {
             username: "",
-            avator: ""
+            avator: "",
+            email:'',
+            gender:'',
+            phone:''
         },
         token: ""
     },
@@ -31,6 +34,15 @@ export default new VueX.Store({
         saveUserProfile(state,payload){
             state.user.username = payload.username;
             state.user.avator = payload.avator;
+            state.user.email = payload.email;
+            if(payload.gender==1){
+                state.user.gender = '男';
+            }else{
+                state.user.gender = '女';
+            }
+         
+            state.user.phone = payload.phone;
+
         }
     },
     actions: {//用来修改state  发请求是异步操作 只可以使用actions

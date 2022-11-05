@@ -75,7 +75,8 @@ export default {
                         message: `${res.data.username}-${res.data.msg}`,
                         type: 'success'
                     });
-                    this.$router.push("/")
+                    location.reload()//相当于ctrl+F5 会有一瞬间空白
+                    
                 }
                 // this.login.username = "";
                 // this.login.password = "";
@@ -88,7 +89,7 @@ export default {
                 this.$message.error(" 登陆异常,请稍后重试")
               
             })
-        }
+        },
     }
 
 }

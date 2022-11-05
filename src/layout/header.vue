@@ -3,10 +3,7 @@
         <div class="left">
             <span :class="className" @click="change"></span>
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-                <el-breadcrumb-item><a href="/">活动管理</a></el-breadcrumb-item>
-                <el-breadcrumb-item>活动列表</el-breadcrumb-item>
-                <el-breadcrumb-item>活动详情</el-breadcrumb-item>
+                <el-breadcrumb-item :to="{ path: '/' }">{{ msg }}</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
         <div class="rigth">
@@ -16,7 +13,9 @@
                     <!-- <i class="el-icon-arrow-down el-icon--right"></i> -->
                 </span>
                 <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item> {{user.username}}</el-dropdown-item>
+                    <el-dropdown-item command="userContent">
+                        {{ user.username }}
+                    </el-dropdown-item>
                     <el-dropdown-item>
                         <el-image style="width: 35px; height: 35px" :src="url" :preview-src-list="srcList"></el-image>
                     </el-dropdown-item>
@@ -42,13 +41,15 @@ export default {
             state: true,
             srcList: [
                 'https://gd-hbimg.huaban.com/31d4ecf35a14b1269b987e1326d1369534b6f6cc4f757-oAIvsv_fw658',
-
-            ]
+            ],
+            msg: '首页'
         }
     },
     created() {
         this.className['el-icon-s-unfold'] = this.isCollapse
         this.className['el-icon-s-fold'] = !this.isCollapse
+        document.title = this.$route.meta.title;
+        this.msg = this.$route.meta.title;
     },
     computed: {
         isCollapse() {
@@ -63,6 +64,11 @@ export default {
         isCollapse(newValue) {
             this.className['el-icon-s-unfold'] = newValue
             this.className['el-icon-s-fold'] = !newValue
+        },
+        $route(newValue) {
+            console.log(newValue);
+            document.title = newValue.meta.title;
+            this.msg = newValue.meta.title;
         }
     },
     methods: {
@@ -76,10 +82,13 @@ export default {
         },
         handleCommand(command) {
             console.log(command);
-            if (command === 'logout') { 
+            if (command === 'logout') {
                 this.$store.commit('removeToken');
                 this.$cookie.remove('rh_id');
                 this.$router.push('/login')
+            }
+            if(command === 'userContent'){
+                this.$router.push("/profile")
             }
         }
 

@@ -1,8 +1,15 @@
 import router from "@/router"
 import cookie from "js-cookie"
 import store from '@/store/indedx'
+import { Message } from 'element-ui'
 //保安系统
 router.beforeEach(async (to, from, next) => {
+    if(!store.state.user.email){
+        Message({
+            type:'warning',
+            message:'请绑定邮箱'
+        })
+    }
     let token = store.state.token
     if(!token){
         //用户刷新了 VueX中没有tokrn了 将cookie中的token再次存放到VueX中

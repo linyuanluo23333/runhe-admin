@@ -12,10 +12,12 @@ Vue.use(ElementUI);//2. 按需加载
 Vue.config.productionTip = false;
 Vue.prototype.$http = axios;
 Vue.prototype.$cookie = Cookie;
-Vue.prototype.$EventBus  = new Vue()//1e
+Vue.prototype.$EventBus  = new Vue()//1e+
+
+
 
 new Vue({
   router,
   store,
-  render: h => h(App)
+  render: h => h(App),
 }).$mount('#app')

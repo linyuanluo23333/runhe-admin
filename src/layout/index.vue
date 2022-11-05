@@ -13,10 +13,12 @@
                     <Header></Header>
                 </el-header>
                 <el-main>
+                    <keep-alive include="Title">
                     <!-- {{$store.state.msg}}vuex -->
                     <!-- {{msg}} -->
                     <router-view></router-view> <!-- 二级路由的渲染 -->
                     <!-- <el-button @click="cd">修改store内的值</el-button> -->
+                </keep-alive>
                 </el-main>
             </el-container>
         </el-container>
