@@ -89,7 +89,6 @@ export default {
     //     }
     // }
     created() {//1e
-        console.log(this.$router);
         this.$EventBus.$on('changeCollapse', () => {
             this.isCollapse = !this.isCollapse;
         });

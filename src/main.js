@@ -7,12 +7,15 @@ import "normalize.css"
 import axios from "@/axios/indedx"
 import Cookie from "js-cookie"
 import store from "@/store/indedx"//vuex
+import VueDplayer from 'vue-dplayer'
+import 'vue-dplayer/dist/vue-dplayer.css';
 
 Vue.use(ElementUI);//2. 按需加载
 Vue.config.productionTip = false;
 Vue.prototype.$http = axios;
 Vue.prototype.$cookie = Cookie;
 Vue.prototype.$EventBus  = new Vue()//1e+
+Vue.use(VueDplayer)
 
 
 

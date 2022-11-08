@@ -37,7 +37,7 @@ export default {
         reRender() {
             let uuid = this.uuid();
             this.login.uuid = uuid;
-            this.imgsrc += `http://81.68.121.52:8000/api/generateimagecode?uuid=${uuid}`
+            this.imgsrc = `http://81.68.121.52:8000/api/generateimagecode?uuid=${uuid}`
         },
         uuid() {
             return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {

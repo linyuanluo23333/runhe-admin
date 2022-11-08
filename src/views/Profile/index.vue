@@ -16,30 +16,52 @@
                 <div>用户名 : {{ user.username }}</div>
                 <div>性别 : {{ user.gender }}</div>
                 <div>手机号 : {{ user.phone }}</div>
-                <div>邮箱 : {{ user.email }}</div>
+                <div v-if="user.email">邮箱 : {{ user.email }}</div>
+                <div v-else="user.email">
+                    <el-button style="margin-top: 12px;" @click="getemail">获取邮箱</el-button>
+                </div>
             </div>
         </div>
         <div class="upmsg">
             <div>修改用户信息</div>
-            <div>
-                <el-steps :active="active" finish-status="success">
-                    <el-step title="步骤 1"></el-step>
-                    <el-step title="步骤 2"></el-step>
-                    <el-step title="步骤 3"></el-step>
-                </el-steps>
-                <el-button style="margin-top: 12px;" @click="getemail">获取邮箱</el-button>
-                <el-button style="margin-top: 12px;" @click="next">下一步</el-button>
+            <div class="unappmsg">
+                <el-tabs v-model="activeName" @tab-click="handleClick">
+                    <el-tab-pane label="修改邮箱" name="first">
+                        <el-steps :active="active" finish-status="success" class="bzhou">
+                            <el-step title="步骤 1" description="获取旧邮箱验证码"></el-step>
+                            <el-step title="步骤 2" description="输入旧邮箱验证码"></el-step>
+                            <el-step title="步骤 3" description="获取新邮箱地址"></el-step>
+                            <el-step title="步骤 4" description="输入邮箱验证码"></el-step>
+                        </el-steps>
+
+                    </el-tab-pane>
+
+                    <el-tab-pane label="修改密码" name="second">
+                        <el-steps :active="active1" finish-status="success" class="bzhou1">
+                            <el-step title="步骤 1" description="获取邮箱验证码"></el-step>
+                            <el-step title="步骤 2" description="提交新密码"></el-step>
+                        </el-steps>
+
+                    </el-tab-pane>
+                </el-tabs>
+                <Upemail v-if="states" @nnn='nnn'></Upemail>
+                <Passupdata v-else="stat" @nnn1='nnn1'></Passupdata>
+                <!-- <el-button style="margin-top: 12px;" @click="next">下一步</el-button> -->
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import Upemail from './emailupdata.vue'
+import Passupdata from './passupdate.vue'
 import Add from './emailno.vue'
 import { mapState } from 'vuex'
 export default {
     components: {
-        Add
+        Add,
+        Upemail,
+        Passupdata
     },
     computed: {//计算属性
         ...mapState(['user'])
@@ -49,11 +71,15 @@ export default {
         return {
             //    src:'' 
             // imageUrl: '',
+            states: true,
+            stat: false,
             header: {
                 authorization: `Bearer ${this.$store.state.token}`
             },
+            activeName: 'first',
             state: false,
-            active: 0
+            active: 0,
+            active1: 0
         };
     },
     created() {
@@ -70,6 +96,15 @@ export default {
             reader.readAsDataURL(file.raw)
             // let result = URL.createObjectURL(file.raw);bold 在线地址
             // this.imageUrl = result
+        },
+        handleClick(tab, event) {
+            if (tab.index == '1') {
+                this.states = false
+                this.stat = true
+            } else {
+                this.states = true
+                this.stat = false
+            }
         },
         success() {
             this.$message({
@@ -89,18 +124,21 @@ export default {
             }
             reader.readAsDataURL(file);
         },
-        next() {
-            if (this.active++ > 2) this.active = 0;
-        },
         getemail() {
-            if(!this.$store.state.user.email){
+            if (!this.$store.state.user.email) {
                 this.state = true
             }
-            
         },
         cancel() {//父传子 emit
             this.state = false
         },
+        nnn1(){
+            if (this.active1++ > 1) this.active = 0;              
+        },
+        nnn(){
+            if (this.active++ > 3) this.active = 0;              
+        },
+
 
     },
 };
@@ -188,7 +226,7 @@ h3 {
 .upmsg {
     width: 75%;
     height: 100px;
-    background-color: aliceblue;
+    background-color: #fff;
 }
 
 .upmsg>:first-child {
@@ -203,5 +241,21 @@ h3 {
 .el-upload--text {
     margin: 0 20%;
     width: 60%;
+}
+
+.bzhou {
+    width: 80%;
+    margin: 0 auto;
+}
+
+.bzhou1 {
+    width: 50%;
+    margin: 0 auto;
+}
+
+.unappmsg {
+    padding: 0 20px;
+    height: 410px;
+    background-color: #fff;
 }
 </style>
