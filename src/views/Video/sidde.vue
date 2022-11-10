@@ -13,7 +13,8 @@ export default {
             defaultProps: {
                 children: 'children',
                 label: 'label'
-            }
+            },
+            videobut:[],
         };
     },
     created() {
@@ -51,23 +52,27 @@ export default {
     },
     methods: {
         handleNodeClick(data) {
-
-            console.log(data);
             if (!data.children) {
                 this.$http({
                     url: `/api/chapter_video?pk=${data.id}`
                 }).then(res => {
                   let datass =res.data.data
-                  datass.forEach(item=>{
-                    console.log(item);
-                  })
+                  this.videobut = datass
+                  this.butxuan()
+                //   datass.forEach(item=>{
+                //     console.log(item);
+                //   })
 
                 })
             }else{
                 console.log('标题');
             }
 
+        },
+        butxuan(){
+            this.$emit("getbuttname",this.videobut)
         }
+
     }
 }
 </script>

@@ -2,11 +2,11 @@
     <div class="mpfour">
         <div class="aside">
             <keep-alive include="Video">
-                <asides></asides>
+                <asides @getbuttname="meetfun"></asides>
             </keep-alive>
         </div>
         <div class="content">
-            <vvv></vvv>
+            <vvv :shoplistarr="buttons"></vvv>
         </div>
         <!-- <Add :state="state" @cancel='cancel' @success='success' />
         <el-table :data="tableData" style="width: 100%">
@@ -30,15 +30,26 @@
 <script>
 
 import asides from './sidde.vue'
-import Add from './AddVideo.vue'
+
 import vvv from './videoAside.vue'
 export default {
 
     components: {
-        Add,
+      
         vvv,
         asides
     },
+    data() {
+        return {
+            buttons:[]
+        }
+    },
+    methods:{
+        meetfun(val){
+            this.buttons = val
+            console.log(this.buttons);
+        }
+    }
     // data() {
     //     return {
     //         tableData: [],
@@ -166,14 +177,17 @@ export default {
 <style>
 .aside {
     width: 20%;
-    height: 500px;
+    height: 100%;
     background-color: #fff;
 }
-.mpfour{
+
+.mpfour {
     display: flex;
     justify-content: space-between;
+    background-color: #fff;
 }
-.content{
+
+.content {
     width: 80%;
     background-color: rgb(252, 252, 252);
 }
